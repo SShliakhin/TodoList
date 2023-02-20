@@ -65,18 +65,7 @@ extension TodoListViewController: UITableViewDelegate {
 // MARK: - UIComponent
 private extension TodoListViewController {
 	private func setup() {
-		setupTableView()
-	}
-	
-	func setupTableView() {
-		tableView.register(
-			models: [
-				RegularTaskViewModel.self,
-				ImportantTaskViewModel.self
-			]
-		)
-		tableView.dataSource = self
-		tableView.delegate = self
+		presenter.setupTableView(tableView, dataSource: self, delegate: self)
 	}
 	
 	func applyStyle() {

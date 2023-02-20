@@ -6,4 +6,5 @@ protocol ITodoListViewOutput: AnyObject {
 	func getTitleForHeaderInSection(_ section: Int) -> String?
 	func getNumberOfRowsInSection(_ section: Int) -> Int
 	func getCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+	func setupTableView(_ tableView: UITableView, dataSource: UITableViewDataSource, delegate: UITableViewDelegate)
 }

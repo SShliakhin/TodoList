@@ -73,4 +73,20 @@ extension TodoListPresenter: ITodoListViewOutput {
 		
 		return UITableViewCell()
 	}
+	
+	/// Настройка делегатов таблицы
+	/// - Parameters:
+	///   - tableView: таблица
+	///   - dataSource: кто подписан под протокол UITableViewDataSource
+	///   - delegate: кто подписан под протокол UITableViewDelegate
+	func setupTableView(_ tableView: UITableView, dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
+		tableView.register(
+			models: [
+				RegularTaskViewModel.self,
+				ImportantTaskViewModel.self
+			]
+		)
+		tableView.dataSource = dataSource
+		tableView.delegate = delegate
+	}
 }
