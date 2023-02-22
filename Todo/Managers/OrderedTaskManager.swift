@@ -2,29 +2,29 @@ import Foundation
 
 /// Предоставляет список задач, отсортированных по приоритету.
 final class OrderedTaskManager: ITaskManager {
-	let taskManager: ITaskManager
+	private let taskManager: ITaskManager
 	
 	init(taskManager: ITaskManager) {
 		self.taskManager = taskManager
 	}
 	
-	public func allTasks() -> [Task] {
+	func allTasks() -> [Task] {
 		sorted(tasks: taskManager.allTasks())
 	}
 	
-	public func completedTasks() -> [Task] {
+	func completedTasks() -> [Task] {
 		sorted(tasks: taskManager.completedTasks())
 	}
 	
-	public func uncompletedTasks() -> [Task] {
+	func uncompletedTasks() -> [Task] {
 		sorted(tasks: taskManager.uncompletedTasks())
 	}
 	
-	public func addTask(task: Task) {
+	func addTask(task: Task) {
 		taskManager.addTask(task: task)
 	}
 	
-	public func addTasks(tasks: [Task]) {
+	func addTasks(tasks: [Task]) {
 		taskManager.addTasks(tasks: tasks)
 	}
 	
