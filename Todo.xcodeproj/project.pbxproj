@@ -18,7 +18,6 @@
 		5A1EA10A29997791003CF309 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1EA10829997791003CF309 /* Theme.swift */; };
 		5A1EA10D29997AF2003CF309 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1EA10C29997AF2003CF309 /* Task.swift */; };
 		5AB69332299D382A003D3958 /* ITaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB69331299D382A003D3958 /* ITaskManager.swift */; };
-		5AB69336299D4FAE003D3958 /* TaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB69335299D4FAE003D3958 /* TaskViewModel.swift */; };
 		5AB69338299D5CFB003D3958 /* ImportantTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB69337299D5CFB003D3958 /* ImportantTaskCell.swift */; };
 		5AB6933A299D6098003D3958 /* RegularTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB69339299D6098003D3958 /* RegularTaskCell.swift */; };
 		5AF4FF6529A1DC3100ABE929 /* OrderedTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF4FF6429A1DC3000ABE929 /* OrderedTaskManager.swift */; };
@@ -29,6 +28,7 @@
 		5AF4FF6F29A24B1700ABE929 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 5AF4FF6E29A24B1700ABE929 /* .gitignore */; };
 		5AF4FF7129A24C9B00ABE929 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5AF4FF7029A24C9B00ABE929 /* README.md */; };
 		5AF4FF7429A58F9600ABE929 /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF4FF7329A58F9600ABE929 /* TaskManager.swift */; };
+		5AF4FF7729A5A24800ABE929 /* TodoListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF4FF7629A5A24800ABE929 /* TodoListModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +45,6 @@
 		5A1EA10829997791003CF309 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		5A1EA10C29997AF2003CF309 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		5AB69331299D382A003D3958 /* ITaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITaskManager.swift; sourceTree = "<group>"; };
-		5AB69335299D4FAE003D3958 /* TaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewModel.swift; sourceTree = "<group>"; };
 		5AB69337299D5CFB003D3958 /* ImportantTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportantTaskCell.swift; sourceTree = "<group>"; };
 		5AB69339299D6098003D3958 /* RegularTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegularTaskCell.swift; sourceTree = "<group>"; };
 		5AF4FF6429A1DC3000ABE929 /* OrderedTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedTaskManager.swift; sourceTree = "<group>"; };
@@ -56,6 +55,7 @@
 		5AF4FF6E29A24B1700ABE929 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		5AF4FF7029A24C9B00ABE929 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5AF4FF7329A58F9600ABE929 /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
+		5AF4FF7629A5A24800ABE929 /* TodoListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,7 +166,7 @@
 		5AF4FF63299FBDB700ABE929 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5AB69335299D4FAE003D3958 /* TaskViewModel.swift */,
+				5AF4FF7629A5A24800ABE929 /* TodoListModel.swift */,
 				5AB69337299D5CFB003D3958 /* ImportantTaskCell.swift */,
 				5AB69339299D6098003D3958 /* RegularTaskCell.swift */,
 			);
@@ -268,8 +268,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AF4FF7429A58F9600ABE929 /* TaskManager.swift in Sources */,
-				5AB69336299D4FAE003D3958 /* TaskViewModel.swift in Sources */,
 				5A1EA104299976EF003CF309 /* UITableView+Extensions.swift in Sources */,
+				5AF4FF7729A5A24800ABE929 /* TodoListModel.swift in Sources */,
 				5A1EA101299976EF003CF309 /* Array+Extensions.swift in Sources */,
 				5AF4FF6729A1DF6400ABE929 /* ISectionForTaskManagerAdapter.swift in Sources */,
 				5AB69332299D382A003D3958 /* ITaskManager.swift in Sources */,

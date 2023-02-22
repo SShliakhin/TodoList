@@ -2,7 +2,7 @@ import UIKit
 
 /// Реализация ячейки для обычной задачи
 final class RegularTaskCell: UITableViewCell {
-	var task: RegularTaskViewModel? {
+	var task: TodoListModel.ViewData.RegularTaskViewModel? {
 		didSet {
 			guard let task = task else { return }
 			title.text = task.title

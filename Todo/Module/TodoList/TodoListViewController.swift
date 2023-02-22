@@ -3,6 +3,7 @@ import UIKit
 /// Реализация вьюконтроллера TodoList
 final class TodoListViewController: UIViewController {
 	private let presenter: ITodoListViewOutput
+	private var viewData: TodoListModel.ViewData = TodoListModel.ViewData(tasksBySection: [])
 	
 	// MARK: - UI
 	private lazy var tableView: UITableView = {
@@ -30,6 +31,8 @@ final class TodoListViewController: UIViewController {
 		setup()
 		applyStyle()
 		applyLayout()
+		
+		presenter.viewDidLoad()
 	}
 }
 
@@ -37,16 +40,26 @@ final class TodoListViewController: UIViewController {
 
 extension TodoListViewController: UITableViewDataSource {
 	func numberOfSections(in tableView: UITableView) -> Int {
-		presenter.getNumberOfSections()
+		viewData.tasksBySection.count
 	}
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		presenter.getTitleForHeaderInSection(section)
+		viewData.tasksBySection[section].title
 	}
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		presenter.getNumberOfRowsInSection(section)
+		viewData.tasksBySection[section].tasks.count
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		presenter.getCell(tableView, cellForRowAt: indexPath)
+		let tasks = viewData.tasksBySection[indexPath.section].tasks
+		let taskData = tasks[indexPath.row]
+		
+		switch taskData {
+		case .importantTask(let task):
+			return tableView.dequeueReusableCell(withModel: task, for: indexPath)
+		case .regularTask(let task):
+			return tableView.dequeueReusableCell(withModel: task, for: indexPath)
+		@unknown default:
+			return UITableViewCell()
+		}
 	}
 }
 
@@ -61,11 +74,26 @@ extension TodoListViewController: UITableViewDelegate {
 	}
 }
 
+// MARK: - ITodoListViewInput
+
+extension TodoListViewController: ITodoListViewInput {
+	func renderData(viewData: TodoListModel.ViewData) {
+		self.viewData = viewData
+		tableView.reloadData()
+	}
+}
 
 // MARK: - UIComponent
 private extension TodoListViewController {
 	private func setup() {
-		presenter.setupTableView(tableView, dataSource: self, delegate: self)
+		tableView.register(
+			models: [
+				TodoListModel.ViewData.RegularTaskViewModel.self,
+				TodoListModel.ViewData.ImportantTaskViewModel.self
+			]
+		)
+		tableView.dataSource = self
+		tableView.delegate = self
 	}
 	
 	func applyStyle() {

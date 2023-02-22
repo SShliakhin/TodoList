@@ -2,7 +2,7 @@ import UIKit
 
 /// Реализация ячейки для важной задачи
 final class ImportantTaskCell: UITableViewCell {
-	var task: ImportantTaskViewModel? {
+	var task: TodoListModel.ViewData.ImportantTaskViewModel? {
 		didSet {
 			guard let task = task else { return }
 			title.text = task.title

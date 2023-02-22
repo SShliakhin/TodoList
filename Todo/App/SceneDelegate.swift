@@ -12,27 +12,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let windowScene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: windowScene)
 		
-		let repository: ITaskRepository = TaskRepositoryStub()
-		let taskManager: ITaskManager = OrderedTaskManager(
-			taskManager: TaskManager(
-				tasks: repository.getTasks()
-			)
-		)
-		let sectionForTaskManager: ISectionForTaskManagerAdapter = SectionForTaskManagerAdapter(taskManager: taskManager)
+		let repository = TaskRepositoryStub()
+		let taskManager = OrderedTaskManager(taskManager: TaskManager(tasks: repository.getTasks()))
+		let sectionForTaskManager = SectionForTaskManagerAdapter(taskManager: taskManager)
 		
-		let presenter = TodoListPresenter(
-			taskManager: taskManager,
-			sectionForTaskManager: sectionForTaskManager
-		)
+		let presenter = TodoListPresenter(sectionForTaskManager: sectionForTaskManager)
+		let view = TodoListViewController(presenter: presenter)
+		presenter.view = view
 		
-		window.rootViewController = UINavigationController(
-			rootViewController: TodoListViewController(
-				presenter: presenter
-			)
-		)
+		window.rootViewController = UINavigationController(rootViewController: view)
 		
 		window.makeKeyAndVisible()
 		self.window = window
 	}
-	
 }

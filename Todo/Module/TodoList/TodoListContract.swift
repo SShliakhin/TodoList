@@ -1,10 +1,14 @@
 import UIKit
 
-// MARK: View Output (Presenter -> View)
-protocol ITodoListViewOutput: AnyObject {
-	func getNumberOfSections() -> Int
-	func getTitleForHeaderInSection(_ section: Int) -> String?
-	func getNumberOfRowsInSection(_ section: Int) -> Int
-	func getCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-	func setupTableView(_ tableView: UITableView, dataSource: UITableViewDataSource, delegate: UITableViewDelegate)
+protocol ITodoListViewInput: AnyObject {
+	/// Отображение данных на основе переданной модели.
+	/// - Parameter viewData: Модель данных вью.
+	func renderData(viewData: TodoListModel.ViewData)
 }
+
+protocol ITodoListPresenterInput {
+	
+	/// View загружена
+	func viewDidLoad()
+}
+typealias ITodoListViewOutput = ITodoListPresenterInput
