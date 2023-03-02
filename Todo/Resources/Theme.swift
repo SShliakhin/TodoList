@@ -111,6 +111,7 @@ enum Theme {
 	enum Size {
 		case cellDefaultHeight
 		case setCompletedButtonHeightOrWidht
+		case cornerRadius
 	}
 	
 	static func size(kind: Size) -> CGFloat {
@@ -121,6 +122,8 @@ enum Theme {
 			customSize = 44
 		case .setCompletedButtonHeightOrWidht:
 			customSize = 20
+		case .cornerRadius:
+			customSize = 6
 		}
 		
 		return customSize
