@@ -97,7 +97,7 @@ private extension TodoListViewController {
 	}
 	
 	func applyStyle() {
-		title = "Todo list"
+		title = Appearance.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 		view.backgroundColor = Theme.color(usage: .ypWhite)
 	}
@@ -112,5 +112,12 @@ private extension TodoListViewController {
 			tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
+	}
+}
+
+// MARK: - Appearance
+extension TodoListViewController {
+	enum Appearance {
+		static let title = "Todo list"
 	}
 }

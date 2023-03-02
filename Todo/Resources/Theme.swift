@@ -61,6 +61,27 @@ enum Theme {
 		return UIImage(named: kind.rawValue) ?? .actions
 	}
 	
+	//MARK: - ContentInset
+	enum ContentInset {
+		case cell
+	}
+	
+	static func contentInset(kind: ContentInset) -> UIEdgeInsets {
+		let customInsets: UIEdgeInsets
+		
+		switch kind {
+		case .cell:
+			customInsets = .init(
+				top: 4,
+				left: 16,
+				bottom: -4,
+				right: -16
+			)
+		}
+		
+		return customInsets
+	}
+	
 	// MARK: - Spacing
 	enum Spacing {
 		case standard

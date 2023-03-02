@@ -7,8 +7,8 @@ protocol ITodoListViewInput: AnyObject {
 }
 
 protocol ITodoListPresenterInput {
-	
 	/// View загружена
 	func viewDidLoad()
 }
+
 typealias ITodoListViewOutput = ITodoListPresenterInput
