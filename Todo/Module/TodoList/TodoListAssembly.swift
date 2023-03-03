@@ -5,12 +5,10 @@ final class TodoListAssembly {
 	/// Собирает модуль todoList
 	/// - Returns: модуль todoList
 	func assemble() -> UIViewController {
-		let repository = TaskRepositoryStub()
-		let taskManager = OrderedTaskManager(taskManager: TaskManager(tasks: repository.getTasks()))
-		let sectionForTaskManager = SectionForTaskManagerAdapter(taskManager: taskManager)
 		
-		let presenter = TodoListPresenter(sectionForTaskManager: sectionForTaskManager)
-		let view = TodoListViewController(presenter: presenter)
+		let presenter = TodoListPresenter()
+		let interactor = TodoListInteractor(presenter: presenter)
+		let view = TodoListViewController(interactor: interactor)
 		presenter.view = view
 
 		return view

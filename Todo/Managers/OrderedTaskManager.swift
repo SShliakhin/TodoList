@@ -1,6 +1,6 @@
 import Foundation
 
-/// Предоставляет список задач, отсортированных по приоритету.
+/// Предоставляет список задач, отсортированных по приоритету - декоратор над TaskManager
 final class OrderedTaskManager: ITaskManager {
 	private let taskManager: ITaskManager
 	

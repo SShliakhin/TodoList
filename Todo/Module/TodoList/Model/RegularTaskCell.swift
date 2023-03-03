@@ -2,7 +2,7 @@ import UIKit
 
 /// Реализация ячейки для обычной задачи
 final class RegularTaskCell: UITableViewCell {
-	var task: TodoListModel.ViewData.RegularTaskViewModel? {
+	var task: TodoListModel.FetchTasks.ViewData.RegularTaskViewModel? {
 		didSet {
 			guard let task = task else { return }
 			title.text = task.title
@@ -86,8 +86,7 @@ private extension RegularTaskCell {
 // MARK: - Actions
 extension RegularTaskCell {
 	@objc func setCompleted(_ sender: UIButton) {
-		if let callback = task?.callback {
-			callback()
-		}
+		guard let task = task else { return }
+		task.callback?(task.task)
 	}
 }

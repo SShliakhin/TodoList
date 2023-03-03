@@ -2,7 +2,7 @@ import UIKit
 
 /// Реализация ячейки для важной задачи
 final class ImportantTaskCell: UITableViewCell {
-	var task: TodoListModel.ViewData.ImportantTaskViewModel? {
+	var task: TodoListModel.FetchTasks.ViewData.ImportantTaskViewModel? {
 		didSet {
 			guard let task = task else { return }
 			title.text = task.title
@@ -113,8 +113,7 @@ private extension ImportantTaskCell {
 // MARK: - Actions
 extension ImportantTaskCell {
 	@objc func setCompleted(_ sender: UIButton) {
-		if let callback = task?.callback {
-			callback()
-		}
+		guard let task = task else { return }
+		task.callback?(task.task)
 	}
 }

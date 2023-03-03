@@ -2,8 +2,8 @@ import UIKit
 
 /// Реализация вьюконтроллера TodoList
 final class TodoListViewController: UIViewController {
-	private let presenter: ITodoListViewOutput
-	private var viewData: TodoListModel.ViewData = TodoListModel.ViewData(tasksBySection: [])
+	private let interactor: ITodoListBusinessLogic
+	private var viewData: TodoListModel.FetchTasks.ViewData = .init(tasksBySection: [])
 	
 	// MARK: - UI
 	private lazy var tableView: UITableView = {
@@ -16,8 +16,8 @@ final class TodoListViewController: UIViewController {
 	}()
 	
 	// MARK: - Init
-	init(presenter: ITodoListViewOutput) {
-		self.presenter = presenter
+	init(interactor: ITodoListBusinessLogic) {
+		self.interactor = interactor
 		super.init(nibName: nil, bundle: nil)
 	}
 	required init?(coder: NSCoder) {
@@ -32,7 +32,7 @@ final class TodoListViewController: UIViewController {
 		applyStyle()
 		applyLayout()
 		
-		presenter.viewDidLoad()
+		interactor.fetchTasks(request: .init())
 	}
 }
 
@@ -76,8 +76,8 @@ extension TodoListViewController: UITableViewDelegate {
 
 // MARK: - ITodoListViewInput
 
-extension TodoListViewController: ITodoListViewInput {
-	func renderData(viewData: TodoListModel.ViewData) {
+extension TodoListViewController: ITodoListDisplayLogic {
+	func render(_ viewData: TodoListModel.FetchTasks.ViewData) {
 		self.viewData = viewData
 		tableView.reloadData()
 	}
@@ -88,8 +88,8 @@ private extension TodoListViewController {
 	private func setup() {
 		tableView.register(
 			models: [
-				TodoListModel.ViewData.RegularTaskViewModel.self,
-				TodoListModel.ViewData.ImportantTaskViewModel.self
+				TodoListModel.FetchTasks.ViewData.RegularTaskViewModel.self,
+				TodoListModel.FetchTasks.ViewData.ImportantTaskViewModel.self
 			]
 		)
 		tableView.dataSource = self
