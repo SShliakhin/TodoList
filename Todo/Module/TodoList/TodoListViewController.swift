@@ -2,7 +2,8 @@ import UIKit
 
 /// Реализация вьюконтроллера TodoList
 final class TodoListViewController: UIViewController {
-	private let presenter: ITodoListViewOutput
+	private let interactor: ITodoListBusinessLogic
+	private var viewData: TodoListModel.FetchTasks.ViewData = .init(tasksBySection: [])
 	
 	// MARK: - UI
 	private lazy var tableView: UITableView = {
@@ -15,8 +16,8 @@ final class TodoListViewController: UIViewController {
 	}()
 	
 	// MARK: - Init
-	init(presenter: ITodoListViewOutput) {
-		self.presenter = presenter
+	init(interactor: ITodoListBusinessLogic) {
+		self.interactor = interactor
 		super.init(nibName: nil, bundle: nil)
 	}
 	required init?(coder: NSCoder) {
@@ -30,6 +31,8 @@ final class TodoListViewController: UIViewController {
 		setup()
 		applyStyle()
 		applyLayout()
+		
+		interactor.fetchTasks(request: .init())
 	}
 }
 
@@ -37,16 +40,26 @@ final class TodoListViewController: UIViewController {
 
 extension TodoListViewController: UITableViewDataSource {
 	func numberOfSections(in tableView: UITableView) -> Int {
-		presenter.getNumberOfSections()
+		viewData.tasksBySection.count
 	}
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		presenter.getTitleForHeaderInSection(section)
+		viewData.tasksBySection[section].title
 	}
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		presenter.getNumberOfRowsInSection(section)
+		viewData.tasksBySection[section].tasks.count
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		presenter.getCell(tableView, cellForRowAt: indexPath)
+		let tasks = viewData.tasksBySection[indexPath.section].tasks
+		let taskData = tasks[indexPath.row]
+		
+		switch taskData {
+		case .importantTask(let task):
+			return tableView.dequeueReusableCell(withModel: task, for: indexPath)
+		case .regularTask(let task):
+			return tableView.dequeueReusableCell(withModel: task, for: indexPath)
+		@unknown default:
+			return UITableViewCell()
+		}
 	}
 }
 
@@ -61,15 +74,30 @@ extension TodoListViewController: UITableViewDelegate {
 	}
 }
 
+// MARK: - ITodoListViewInput
+
+extension TodoListViewController: ITodoListDisplayLogic {
+	func render(_ viewData: TodoListModel.FetchTasks.ViewData) {
+		self.viewData = viewData
+		tableView.reloadData()
+	}
+}
 
 // MARK: - UIComponent
 private extension TodoListViewController {
 	private func setup() {
-		presenter.setupTableView(tableView, dataSource: self, delegate: self)
+		tableView.register(
+			models: [
+				TodoListModel.FetchTasks.ViewData.RegularTaskViewModel.self,
+				TodoListModel.FetchTasks.ViewData.ImportantTaskViewModel.self
+			]
+		)
+		tableView.dataSource = self
+		tableView.delegate = self
 	}
 	
 	func applyStyle() {
-		title = "Todo list"
+		title = Appearance.title
 		navigationController?.navigationBar.prefersLargeTitles = true
 		view.backgroundColor = Theme.color(usage: .ypWhite)
 	}
@@ -84,5 +112,12 @@ private extension TodoListViewController {
 			tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 			tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
 		])
+	}
+}
+
+// MARK: - Appearance
+extension TodoListViewController {
+	enum Appearance {
+		static let title = "Todo list"
 	}
 }

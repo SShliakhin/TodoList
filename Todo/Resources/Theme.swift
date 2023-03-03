@@ -61,6 +61,27 @@ enum Theme {
 		return UIImage(named: kind.rawValue) ?? .actions
 	}
 	
+	//MARK: - ContentInset
+	enum ContentInset {
+		case cell
+	}
+	
+	static func contentInset(kind: ContentInset) -> UIEdgeInsets {
+		let customInsets: UIEdgeInsets
+		
+		switch kind {
+		case .cell:
+			customInsets = .init(
+				top: 4,
+				left: 16,
+				bottom: -4,
+				right: -16
+			)
+		}
+		
+		return customInsets
+	}
+	
 	// MARK: - Spacing
 	enum Spacing {
 		case standard
@@ -90,6 +111,7 @@ enum Theme {
 	enum Size {
 		case cellDefaultHeight
 		case setCompletedButtonHeightOrWidht
+		case cornerRadius
 	}
 	
 	static func size(kind: Size) -> CGFloat {
@@ -100,6 +122,8 @@ enum Theme {
 			customSize = 44
 		case .setCompletedButtonHeightOrWidht:
 			customSize = 20
+		case .cornerRadius:
+			customSize = 6
 		}
 		
 		return customSize

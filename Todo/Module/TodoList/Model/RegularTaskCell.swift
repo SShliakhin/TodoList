@@ -2,7 +2,7 @@ import UIKit
 
 /// Реализация ячейки для обычной задачи
 final class RegularTaskCell: UITableViewCell {
-	var task: RegularTaskViewModel? {
+	var task: TodoListModel.FetchTasks.ViewData.RegularTaskViewModel? {
 		didSet {
 			guard let task = task else { return }
 			title.text = task.title
@@ -69,12 +69,14 @@ private extension RegularTaskCell {
 			item.translatesAutoresizingMaskIntoConstraints = false
 			contentView.addSubview(item)
 		}
+		
+		let cellInsets = Theme.contentInset(kind: .cell)
 				
 		NSLayoutConstraint.activate([
-			stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Theme.spacing(usage: .standard2)),
-			stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Theme.spacing(usage: .standard2)),
+			stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: cellInsets.top),
+			stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: cellInsets.bottom),
+			stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: cellInsets.left),
+			stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: cellInsets.right),
 			setCompletedButton.widthAnchor.constraint(equalToConstant: Theme.size(kind: .setCompletedButtonHeightOrWidht)),
 			setCompletedButton.heightAnchor.constraint(equalToConstant: Theme.size(kind: .setCompletedButtonHeightOrWidht))
 		])
@@ -84,8 +86,7 @@ private extension RegularTaskCell {
 // MARK: - Actions
 extension RegularTaskCell {
 	@objc func setCompleted(_ sender: UIButton) {
-		if let callback = task?.callback {
-			callback()
-		}
+		guard let task = task else { return }
+		task.callback?(task.task)
 	}
 }

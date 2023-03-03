@@ -2,7 +2,7 @@ import UIKit
 
 /// Реализация ячейки для важной задачи
 final class ImportantTaskCell: UITableViewCell {
-	var task: ImportantTaskViewModel? {
+	var task: TodoListModel.FetchTasks.ViewData.ImportantTaskViewModel? {
 		didSet {
 			guard let task = task else { return }
 			title.text = task.title
@@ -97,11 +97,13 @@ private extension ImportantTaskCell {
 			contentView.addSubview(item)
 		}
 		
+		let cellInsets = Theme.contentInset(kind: .cell)
+		
 		NSLayoutConstraint.activate([
-			mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-			mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-			mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Theme.spacing(usage: .standard2)),
-			mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Theme.spacing(usage: .standard2)),
+			mainStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: cellInsets.top),
+			mainStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: cellInsets.bottom),
+			mainStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: cellInsets.left),
+			mainStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: cellInsets.right),
 			setCompletedButton.widthAnchor.constraint(equalToConstant: Theme.size(kind: .setCompletedButtonHeightOrWidht)),
 			setCompletedButton.heightAnchor.constraint(equalToConstant: Theme.size(kind: .setCompletedButtonHeightOrWidht))
 		])
@@ -111,8 +113,7 @@ private extension ImportantTaskCell {
 // MARK: - Actions
 extension ImportantTaskCell {
 	@objc func setCompleted(_ sender: UIButton) {
-		if let callback = task?.callback {
-			callback()
-		}
+		guard let task = task else { return }
+		task.callback?(task.task)
 	}
 }

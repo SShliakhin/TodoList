@@ -1,92 +1,36 @@
-import UIKit
-
 /// Реализация презентера для TodoList
 final class TodoListPresenter {
-	private let taskManager: ITaskManager
-	private var sectionForTaskManager: ISectionForTaskManagerAdapter
+	weak var view: ITodoListDisplayLogic?
+	var callback: ((_ task: Task) -> Void)? = nil
 	
-	init(
-		taskManager: ITaskManager,
-		sectionForTaskManager: ISectionForTaskManagerAdapter
-	) {
-		self.taskManager = taskManager
-		self.sectionForTaskManager = sectionForTaskManager
-	}
-}
-
-// MARK: - Private methods
-private extension TodoListPresenter {
-	func getCellData(_ indexPath: IndexPath) -> Task? {
-		sectionForTaskManager.getTasksForSection(section: indexPath.section)[indexPath.row]
-	}
-}
-
-// MARK: - ITodoListViewOutput
-
-extension TodoListPresenter: ITodoListViewOutput {
-	
-	/// Возвращает количество секций
-	/// - Returns: количество секций
-	func getNumberOfSections() -> Int {
-		sectionForTaskManager.getSectionsTitles().count
+	private func mapTasksData(tasks: [Task]) -> [TodoListModel.FetchTasks.ViewData.TaskVM] {
+		tasks.compactMap{ mapTaskData(task: $0) }
 	}
 	
-	/// Возвращает название секции
-	/// - Parameter section: номер секции
-	/// - Returns: название секции по переданному номеру секции
-	func getTitleForHeaderInSection(_ section: Int) -> String? {
-		sectionForTaskManager.getSectionsTitles()[section]
-	}
-	
-	/// Возвращает количество задач в секции
-	/// - Parameter section: номер секции
-	/// - Returns: количество задач по переданному номеру секции
-	func getNumberOfRowsInSection(_ section: Int) -> Int {
-		sectionForTaskManager.getTasksForSection(section: section).count
-	}
-	
-	/// Возвращает заполненную ячейку
-	/// - формирует модель по переданным данным
-	/// - получает нужную ячейку и
-	/// - заполняет ее данными
-	/// - Parameters:
-	///   - tableView: таблица, для которой необходима ячейка
-	///   - indexPath: путь к данным для ячейки
-	/// - Returns: заполненная ячейка переданными данными
-	func getCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let task = getCellData(indexPath) else { return UITableViewCell() }
-		
-		let callback = {
-			task.completed.toggle()
-			tableView.reloadData()
-		}
-		
+	private func mapTaskData(task: Task) -> TodoListModel.FetchTasks.ViewData.TaskVM? {
 		if let task = task as? RegularTask {
-			let model = RegularTaskViewModel(from: task, callback: callback)
-			return tableView.dequeueReusableCell(withModel: model, for: indexPath)
+			return .regularTask(.init(task: task, callback: callback))
 		}
-		
 		if let task = task as? ImportantTask {
-			let model = ImportantTaskViewModel(from: task, callback: callback)
-			return tableView.dequeueReusableCell(withModel: model, for: indexPath)
+			return .importantTask(.init(task: task, callback: callback))
 		}
-		
-		return UITableViewCell()
+		return nil
 	}
-	
-	/// Настройка делегатов таблицы
-	/// - Parameters:
-	///   - tableView: таблица
-	///   - dataSource: кто подписан под протокол UITableViewDataSource
-	///   - delegate: кто подписан под протокол UITableViewDelegate
-	func setupTableView(_ tableView: UITableView, dataSource: UITableViewDataSource, delegate: UITableViewDelegate) {
-		tableView.register(
-			models: [
-				RegularTaskViewModel.self,
-				ImportantTaskViewModel.self
-			]
-		)
-		tableView.dataSource = dataSource
-		tableView.delegate = delegate
+}
+
+// MARK: ITodoListPresenterInput
+
+extension TodoListPresenter: ITodoListPresentationLogic {
+	func showTodoList(response: TodoListModel.FetchTasks.Response) {
+		callback = response.callback
+		var sections: [TodoListModel.FetchTasks.ViewData.Section] = []
+		for section in response.tasksBySection {
+			let sectionData = TodoListModel.FetchTasks.ViewData.Section(
+				title: section.title,
+				tasks: mapTasksData(tasks: section.tasks)
+			)
+			sections.append(sectionData)
+		}
+		view?.render(.init(tasksBySection: sections))
 	}
 }
